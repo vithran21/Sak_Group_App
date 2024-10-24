@@ -1,11 +1,5 @@
 package com.sak.controller;
 
-import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
-
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sak.dto.ProductDto;
 import com.sak.entity.Product;
 import com.sak.repository.ProductRepository;
 import com.sak.repository.UserRepository;

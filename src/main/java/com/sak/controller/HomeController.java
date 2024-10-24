@@ -53,11 +53,11 @@ public class HomeController {
 
     @PostMapping("/login")
     public ModelAndView getlogin(@RequestParam String userName, @RequestParam String password) {
-        User auth =userService.authenticate(userName, password);
-        if(auth!=null) {
+        User auth = userService.authenticate(userName, password);
+        if(auth != null) {
             return new ModelAndView("/user_dash");
         } 
-        if(userName.equals("sak") && password.equals("sak1234")){
+        if(userName.equals("admin") && password.equals("sakadmin")){
             return new ModelAndView("redirect:/admin/admin_dash");
         }
         else {
