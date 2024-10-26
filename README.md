@@ -21,6 +21,7 @@ docker network create my-network
 ### To Run mysql container
 ```bash
 docker run --name mysql-container \
+  --network my-network \
   -e MYSQL_ROOT_PASSWORD=1234 \
   -e MYSQL_DATABASE=myapplication \
   -p 3306:3306 \
@@ -39,10 +40,12 @@ docker run --name group \
 
 ```bash
 docker run --name group \
+  --network my-network \
   -p 8081:8081 \
   -d sak
 ```
-
+*By using till data is working*
+---
 ### To enter inside the container
 ```bash
 docker exec -it mysql-container bash
@@ -50,6 +53,8 @@ docker exec -it mysql-container bash
 ```bash
 docker exec -it mysql-container mysql -uroot -p
 ```
+
+
 
 ### To Run The Container
 ```bash
