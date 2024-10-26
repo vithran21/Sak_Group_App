@@ -31,7 +31,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         productService.getProductHome(model);
-        return "/home";
+        return "home";
         // return new ModelAndView("home");
     }
 
