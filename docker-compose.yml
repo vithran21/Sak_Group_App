@@ -16,6 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: springapp
+    image: sakgroup  
     ports:
       - "8081:8081"
     environment:
@@ -26,5 +27,5 @@ services:
       - my-network
 
 networks:
-  my-network:
+  my-network:  # This will create a network named 'my-network'
     driver: bridge
