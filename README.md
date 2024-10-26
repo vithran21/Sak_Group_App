@@ -16,7 +16,7 @@ docker network create my-network
 
 ### To Build Docker Image
 ```bash
-docker build -t sakt .
+docker build -t sak .
 ```
  
 ### To Run mysql container
