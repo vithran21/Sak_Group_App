@@ -11,11 +11,11 @@ services:
     networks:
       - my-network
 
-  sak:
+  sakgroup:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: group
+    container_name: springapp
     ports:
       - "8081:8081"
     environment:
