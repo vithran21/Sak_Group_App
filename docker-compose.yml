@@ -27,5 +27,6 @@ services:
       - my-network
 
 networks:
-  my-network:  # This will create a network named 'my-network'
+  my-network:  
+    name: my-network
     driver: bridge
