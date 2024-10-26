@@ -22,20 +22,24 @@ docker network create my-network
 ```bash
 docker run --name mysql-container \
   -e MYSQL_ROOT_PASSWORD=1234 \
-  -e MYSQL_DATABASE=mydatabase \
+  -e MYSQL_DATABASE=myapplication \
   -p 3306:3306 \
-  --network my-network \
   -d mysql:latest
 ```
 
 ### To run app container
 ```bash
-docker run --name grop \
-  --network my-network \
+docker run --name group \
   -p 8081:8081 \
   -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/myapplication?createDatabaseIfNotExist=true \
   -e SPRING_DATASOURCE_USERNAME=root \
   -e SPRING_DATASOURCE_PASSWORD=1234 \
+  -d sak
+```
+
+```bash
+docker run --name group \
+  -p 8081:8081 \
   -d sak
 ```
 
