@@ -8,3 +8,13 @@
 ### Application admin Login
 - username=admin
 - password=sakadmin
+---
+### To Build Docker Image
+```bash
+docker build -t sakit333/sak_group:latest .
+```
+### To Run The Container
+```bash
+docker-compose up -d
+```
+---
