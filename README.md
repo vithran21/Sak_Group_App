@@ -5,3 +5,6 @@
 - username=root
 - password=1234
 ---
+### Application admin Login
+- username=admin
+- password=sakadmin
