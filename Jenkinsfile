@@ -1,14 +1,32 @@
 pipeline {
     agent any
-    tools{
+    
+    tools {
         maven 'maven'
     }
+
+    environment {
+        GIT_REPO = 'https://github.com/vithran21/Sak_Group_App.git' // Replace with your GitHub URL
+        APP_NAME = 'spring_app_sak-0.0.1-SNAPSHOT.jar' // Replace with your JAR file name
+        PORT = 8081
+        APP_DIR = '/var/lib/jenkins/workspace/spring-project-build-deploy' // Add your app directory
+    }
+
     stages {
-        stage('Build') {
+        stage('Clone Repository') {
             steps {
+                echo 'Cloning repository...'
+                git branch: 'main', url: "${env.GIT_REPO}"
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                echo 'Building the project with Maven...'
                 sh 'mvn clean package -DskipTests'
             }
         }
+
         stage('deploy') {
             steps {
                 sh '''
@@ -21,12 +39,13 @@ pipeline {
             }
         }
     }
-  post {
-    success {
-      echo "Deployed successfully"
+
+    post {
+        success {
+            echo 'Application deployed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check logs for errors.'
+        }
     }
-    failure {
-      echo "Failed to Deploy"
-    }
-  }
 }
