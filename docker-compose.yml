@@ -28,7 +28,7 @@ services:
       - my-network
     depends_on:
       mysql:
-        condition: service_healthy  # Ensure sakgroup starts only when mysql is healthy
+        condition: service_healthy  
 
 networks:
   my-network:
