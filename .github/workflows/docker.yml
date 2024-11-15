@@ -28,16 +28,41 @@ jobs:
     - name: build spring jar file
       run: mvn clean package -DskipTests
 
-    - name: Build and push Docker image
+    - name: Set version tags and commit hash
+      id: version
       run: |
-        # Build the Docker image
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/sakgroup:latest .
+        VERSION=latest
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        echo "COMMIT_HASH=${COMMIT_HASH}" >> $GITHUB_ENV
+        echo "Set version tags: ${VERSION}, commit hash: ${COMMIT_HASH}"
+
+    - name: Build Docker image with multiple tags
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.VERSION }} -t ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.COMMIT_HASH }} .
+        echo "Docker image sakgroup:${{ env.VERSION }}, sakgroup:${{ env.COMMIT_HASH }} has been successfully built."
+
+    - name: Push Docker image with 'latest' tag
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.VERSION }}
+        echo "Docker image sakgroup:${{ env.VERSION }} has been successfully pushed to Docker Hub."
+
+    - name: Push Docker image with commit hash tag
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.COMMIT_HASH }}
+        echo "Docker image sakgroup:${{ env.COMMIT_HASH }} has been successfully pushed to Docker Hub."
+
+
+    # - name: Build and push Docker image
+    #   run: |
+    #     # Build the Docker image
+    #     docker build -t ${{ secrets.DOCKER_USERNAME }}/sakgroup:latest .
       
-        # Show a message that the Docker image has been prepared
-        echo "Docker image sakgroup:latest has been successfully built."
+    #     # Show a message that the Docker image has been prepared
+    #     echo "Docker image sakgroup:latest has been successfully built."
       
-        # Optionally, push the image to Docker Hub
-        docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:latest
+    #     # Optionally, push the image to Docker Hub
+    #     docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:latest
       
-        # Confirm image is available
-        echo "Docker image sakgroup:latest has been successfully pushed to Docker Hub."
+    #     # Confirm image is available
+    #     echo "Docker image sakgroup:latest has been successfully pushed to Docker Hub."
