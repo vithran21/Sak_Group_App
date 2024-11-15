@@ -19,6 +19,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: build spring jar file
+      run: mvn clean package -DskipTests
+      
     - name: Build and push Docker image
       run: |
         # Build the Docker image
