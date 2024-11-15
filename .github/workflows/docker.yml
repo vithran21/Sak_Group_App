@@ -42,12 +42,14 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.VERSION }} -t ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.COMMIT_HASH }} .
         echo "Docker image sakgroup:${{ env.VERSION }}, sakgroup:${{ env.COMMIT_HASH }} has been successfully built."
 
-    - name: Push Docker image with 'latest' tag
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.VERSION }}
-        echo "Docker image sakgroup:${{ env.VERSION }} has been successfully pushed to Docker Hub."
-
     - name: Push Docker image with commit hash tag
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.COMMIT_HASH }}
         echo "Docker image sakgroup:${{ env.COMMIT_HASH }} has been successfully pushed to Docker Hub."
+
+    -  name: Push Docker image with 'latest' tag
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/sakgroup:${{ env.VERSION }}
+        echo "Docker image sakgroup:${{ env.VERSION }} has been successfully pushed to Docker Hub."
+
+
