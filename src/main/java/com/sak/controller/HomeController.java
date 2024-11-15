@@ -57,7 +57,7 @@ public class HomeController {
         if(auth != null) {
             return new ModelAndView("user_dash");
         } 
-        if(userName.equals("admin") && password.equals("sakadmin")){
+        if(userName.equals("admin") && password.equals("admin")){
             return new ModelAndView("redirect:/admin/admin_dash");
         }
         else {
