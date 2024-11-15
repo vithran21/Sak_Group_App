@@ -1,3 +1,8 @@
+## admin login
+
+- username: admin
+- password: admin
+
 ### install docker-compose
 
  ### To execute 
