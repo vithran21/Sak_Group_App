@@ -4,9 +4,9 @@ WORKDIR /app
 # Copy the application JAR
 COPY ./target/*.jar app.jar
 # Set environment variables
-ENV SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/myapplication?createDatabaseIfNotExist=true
-ENV SPRING_DATASOURCE_USERNAME=root
-ENV SPRING_DATASOURCE_PASSWORD=1234
+ENV SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cvmc042w6kup.ap-south-1.rds.amazonaws.com:3306/myapplication?createDatabaseIfNotExist=true
+ENV SPRING_DATASOURCE_USERNAME=admin
+ENV SPRING_DATASOURCE_PASSWORD=Admin1234
 # Expose port
 EXPOSE 8081
 # Start the application
