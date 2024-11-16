@@ -9,7 +9,6 @@ pipeline {
         GIT_REPO = 'https://github.com/vithran21/Sak_Group_App.git' // Replace with your GitHub URL
         APP_NAME = 'spring_app_sak-0.0.1-SNAPSHOT.jar' // Replace with your JAR file name
         PORT = 8081
-        APP_DIR = '/var/lib/jenkins/workspace/spring-project-build-deploy' // Add your app directory
     }
 
     stages {
@@ -27,15 +26,17 @@ pipeline {
             }
         }
 
-        stage('deploy') {
+        stage('Deploy') {
             steps {
-                sh '''
-                    echo "Stopping spring application processer"
-                    sudo pkill -f target/spring_app_sak-0.0.1-SNAPSHOT.jar
-                    # Start the Spring application
-                    echo "Starting the Spring application..."
-                    sudo java -jar target/spring_app_sak-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
-                '''
+                script {
+                    sh '''
+                        echo "Stopping spring application processer"
+                        sudo pkill -f target/spring_app_sak-0.0.1-SNAPSHOT.jar
+                        # Start the Spring application
+                        echo "Starting the Spring application..."
+                        sudo java -jar target/spring_app_sak-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
+                    '''
+                }
             }
         }
     }
