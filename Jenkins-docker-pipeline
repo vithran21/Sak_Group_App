@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+    
+    tools {
+        maven 'maven'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning repository...'
+                git branch: 'main', url: "${env.GIT_REPO}"
+            }
+        }
+        stage('Build with Maven') {
+            steps {
+                echo 'Building the project with Maven...'
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage('docker login') {
+            steps {
+                docker login -u $DOCKER_UN -p $DOCKER_PWD
+            }
+        }
+        stage('clear container') {
+            steps {
+                sh 'docker rm -f spring-app'
+            }
+        }
+        stage('clear image') {
+            steps {
+                sh 'docker rmi -f spring-image'
+            }
+        }
+        stage('build image') {
+            steps {
+                sh 'docker build -t spring-app'
+            }
+        }
+        stage('container run') {
+            steps {
+                sh 'docker run -it -p 8081:8081 --name spring-app spring-image'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Application deployed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check logs for errors.'
+        }
+    }
+}
