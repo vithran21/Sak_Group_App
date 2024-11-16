@@ -1,8 +1,13 @@
 pipeline {
     agent any
-    
+
     tools {
         maven 'maven'
+    }
+
+    environment {
+        GIT_REPO = 'https://github.com/vithran21/Sak_Group_App.git' // Replace with your GitHub repo
+        APP_NAME = 'spring_app_sak-0.0.1-SNAPSHOT.jar' // Replace with your JAR file name
     }
 
     stages {
@@ -12,35 +17,70 @@ pipeline {
                 git branch: 'main', url: "${env.GIT_REPO}"
             }
         }
+
         stage('Build with Maven') {
             steps {
                 echo 'Building the project with Maven...'
                 sh 'mvn clean package -DskipTests'
             }
         }
-        stage('docker login') {
+
+        stage('Docker Login') {
             steps {
-                docker login -u $DOCKER_UN -p $DOCKER_PWD
+                echo 'Logging in to Docker Hub...'
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_UN', passwordVariable: 'DOCKER_PWD')]) {
+                    sh '''
+                        echo $DOCKER_PWD | docker login -u $DOCKER_UN --password-stdin
+                    '''
+                }
             }
         }
-        stage('clear container') {
+
+        stage('Clear Container') {
             steps {
-                sh 'docker rm -f spring-app'
+                sh '''
+                    echo "Clearing existing Docker container..."
+                    docker rm -f springapp || true
+                '''
             }
         }
-        stage('clear image') {
+
+        stage('Clear Image') {
             steps {
-                sh 'docker rmi -f spring-image'
+                sh '''
+                    echo "Clearing existing Docker image..."
+                    docker rmi -f springimage || true
+                '''
             }
         }
-        stage('build image') {
+
+        stage('Build Image') {
             steps {
-                sh 'docker build -t spring-app'
+                sh '''
+                    echo "Building Docker image..."
+                    docker build -t springimage .
+                '''
             }
         }
-        stage('container run') {
+
+        stage('Push Image') {
             steps {
-                sh 'docker run -it -p 8081:8081 --name spring-app spring-image'
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_UN', passwordVariable: 'DOCKER_PWD')]) {
+                    sh '''
+                        echo "Tagging and pushing Docker image to Docker Hub..."
+                        docker tag springimage $DOCKER_UN/spring-app-image:latest
+                        docker push $DOCKER_UN/spring-app-image:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh '''
+                    echo "Running Docker container..."
+                    docker run --rm -d -p 8081:8081 --name springapp springimage
+                '''
             }
         }
     }
